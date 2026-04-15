@@ -3,49 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhavani Mart | Store Catalog</title>
+    <title>Bhavani Mart | Official Catalog</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;900&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Outfit', sans-serif; background-color: #f8fafc; }
         .bg-navy { background-color: #003366; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .hero-section { background: linear-gradient(rgba(0,51,102,0.85), rgba(0,51,102,0.85)), url('https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=1200&q=80'); background-size: cover; }
+        .hero-section { 
+            background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1200&q=80'); 
+            background-size: cover; background-position: center;
+        }
     </style>
 </head>
 <body>
 
-    <header class="bg-white p-4 shadow-sm border-b flex justify-between items-center sticky top-0 z-50">
+    <nav class="bg-white p-4 sticky top-0 z-50 shadow-md border-b flex justify-between items-center">
         <div>
-            <h1 class="text-2xl font-black text-[#003366] leading-none tracking-tighter italic">BHAVANI<span class="text-orange-500">MART</span></h1>
-            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-[0.3em]">Karmanghat</p>
+            <h1 class="text-2xl font-black text-[#003366] leading-none tracking-tighter uppercase italic">BHAVANI<span class="text-orange-500">MART</span></h1>
+            <p class="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Karmanghat</p>
         </div>
-        <a href="https://wa.me/919182841682" class="bg-green-600 text-white px-5 py-2 rounded-lg font-black text-[10px]">ORDER NOW</a>
-    </header>
+        <a href="https://wa.me/919182841682" class="bg-green-600 text-white px-5 py-2 rounded-lg font-black text-[10px] shadow-sm">ORDER NOW</a>
+    </nav>
+
+    <section class="hero-section py-10 text-center text-white">
+        <h2 class="text-3xl font-black text-yellow-400 uppercase">Store Inventory</h2>
+        <p class="text-[10px] font-bold tracking-[0.2em] opacity-80 uppercase mt-1">Wholesale Prices • 3000 Sq. Ft. Store</p>
+    </section>
 
     <div class="bg-white sticky top-[68px] z-40 border-b shadow-sm">
         <div class="p-4 max-w-xl mx-auto">
-            <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." class="w-full bg-slate-100 p-3 rounded-xl border-none text-sm outline-none focus:ring-2 focus:ring-blue-100">
+            <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search items (Rice, Soap, Pen)..." class="w-full bg-slate-100 p-3 rounded-xl border-none text-sm outline-none focus:ring-2 focus:ring-blue-100 font-medium">
         </div>
         <div class="flex gap-2 px-4 pb-4 overflow-x-auto no-scrollbar" id="catFilters">
             <button onclick="setCategory('all')" class="bg-[#003366] text-white px-5 py-2 rounded-full text-[10px] font-bold uppercase whitespace-nowrap">All Items</button>
         </div>
     </div>
 
-    <main class="container mx-auto p-4 py-8">
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3">
-            <p class="col-span-full text-center text-slate-400 py-20 animate-pulse">Updating Inventory...</p>
+    <main class="container mx-auto p-4 py-8 mb-20">
+        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-3 text-center">
+            <p class="col-span-full text-slate-400 animate-pulse italic">Updating inventory from store...</p>
         </div>
     </main>
 
     <footer class="bg-white border-t p-10 text-center">
-        <p class="text-[10px] text-slate-400 uppercase tracking-widest">Narayana Heights, Karmanghat, Hyderabad</p>
-        <p onclick="checkAdmin()" class="text-[9px] text-slate-200 mt-4 cursor-pointer underline">Store Manager Login</p>
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest mb-2">Near Pochamma Temple, Karmanghat</p>
+        <p class="text-[11px] font-black text-[#003366] mb-6 tracking-tighter">+91 9182841682</p>
+        <p onclick="checkAdmin()" class="text-[10px] text-slate-200 cursor-pointer">© 2026 Bhavani Mart</p>
     </footer>
 
     <script>
         // PASTE YOUR CSV LINK HERE
-        const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQK4lAzDWObCjowN-SuMvzqFpz46ePH4kDCYBrdMCY3A1Uz2pv_ooVR8h2c8JNNpZmKxsSVaq7dDOQc/pub?gid=0&single=true&output=csv';
+        const sheetUrl = 'PASTE_YOUR_CSV_LINK_HERE';
         
         let allItems = [];
         let activeCat = 'all';
@@ -54,23 +63,26 @@
             try {
                 const res = await fetch(sheetUrl);
                 const data = await res.text();
+                // This logic prevents the code tags from appearing as products
                 const rows = data.split('\n').slice(1);
                 
                 allItems = rows.map(r => {
                     const parts = r.split(',');
-                    // Parts[0] is Category (Left), Parts[1] is Item (Right)
-                    return { category: parts[0]?.trim()?.toUpperCase(), name: parts[1]?.trim() };
-                }).filter(i => i.name && i.category);
+                    return { 
+                        category: parts[0]?.replace(/"/g, '').trim().toUpperCase(), 
+                        name: parts[1]?.replace(/"/g, '').trim() 
+                    };
+                }).filter(i => i.name && i.name.length > 1 && !i.name.includes('<'));
 
                 generateCategoryButtons();
                 render();
             } catch (e) {
-                document.getElementById('productGrid').innerHTML = "Error loading store data.";
+                document.getElementById('productGrid').innerHTML = "Check Google Sheet connection.";
             }
         }
 
         function generateCategoryButtons() {
-            const cats = [...new Set(allItems.map(i => i.category))];
+            const cats = [...new Set(allItems.map(i => i.category))].filter(c => c && c !== "CATEGORY");
             const container = document.getElementById('catFilters');
             cats.forEach(c => {
                 const btn = document.createElement('button');
@@ -92,13 +104,13 @@
             });
 
             grid.innerHTML = filtered.map(i => `
-                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between text-center min-h-[140px] relative overflow-hidden">
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[140px] relative">
                     <div class="bg-yellow-400 h-1 absolute top-0 left-0 right-0"></div>
                     <div>
                         <p class="text-[7px] font-black text-blue-500 tracking-widest mb-1 uppercase">${i.category}</p>
                         <h4 class="text-[11px] font-black text-slate-800 uppercase leading-tight">${i.name}</h4>
                     </div>
-                    <a href="https://wa.me/919182841682?text=Order: ${i.name}" class="mt-4 block bg-slate-50 text-slate-400 py-2 rounded-lg text-[8px] font-black hover:bg-[#003366] hover:text-white transition-all uppercase">Order Now</a>
+                    <a href="https://wa.me/919182841682?text=Order: ${i.name}" class="mt-4 block bg-slate-50 text-slate-500 py-2 rounded-lg text-[9px] font-black hover:bg-[#003366] hover:text-white transition-all">ORDER NOW</a>
                 </div>
             `).join('');
         }
