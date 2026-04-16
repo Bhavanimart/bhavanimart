@@ -30,6 +30,19 @@
             50% { transform: scale(1.02); }
         }
         .highlight-banner { animation: pulse-soft 3s infinite ease-in-out; }
+
+        /* Cart Sidebar Logic */
+        .cart-drawer {
+            position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
+            background: white; z-index: 100; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.1);
+        }
+        .cart-drawer.open { right: 0; }
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(16, 29, 54, 0.6); display: none; z-index: 90; backdrop-filter: blur(4px);
+        }
+        .cart-overlay.show { display: block; }
     </style>
 </head>
 <body>
@@ -45,7 +58,7 @@
             </h1>
             <p class="text-[11px] font-bold text-white opacity-90 uppercase tracking-[0.1em] mt-1">+91 9182841682</p>
         </div>
-        <a href="https://wa.me/919182841682?text=Hi%20Bhavani%20Mart,%20I%20would%20like%20to%20place%20an%20order." class="bg-green-600 text-white px-5 py-2 rounded-md font-black text-[12px] shadow-lg uppercase">Order Now</a>
+        <button onclick="toggleCart()" class="bg-green-600 text-white px-5 py-2 rounded-md font-black text-[12px] shadow-lg uppercase">View Cart</button>
     </nav>
 
     <div id="offerSection" class="hidden">
@@ -86,10 +99,32 @@
         <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
     </main>
 
+    <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
+    <div id="cartDrawer" class="cart-drawer flex flex-col p-6">
+        <div class="flex justify-between items-center border-b-2 border-slate-100 pb-4 mb-4">
+            <h2 class="font-[900] text-2xl uppercase tracking-tighter">My Cart</h2>
+            <button onclick="toggleCart()" class="text-red-600 font-black text-sm uppercase">Close</button>
+        </div>
+        <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-4">
+            <p class="text-slate-400 text-center mt-10 font-bold uppercase text-xs">Your cart is empty</p>
+        </div>
+        <div class="border-t-2 border-slate-100 pt-6 mt-4">
+            <button onclick="sendOrder()" class="w-full bg-green-600 text-white py-5 rounded-2xl font-[900] uppercase tracking-widest shadow-xl hover:bg-green-700 transition-colors">
+                Send Order on WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <div onclick="toggleCart()" class="fixed bottom-6 right-6 bg-red-600 text-white p-5 rounded-full shadow-[0_10px_30px_rgba(220,38,38,0.4)] z-[60] cursor-pointer hover:scale-110 transition-transform flex items-center justify-center">
+        <span id="cartCount" class="absolute -top-1 -right-1 bg-navy text-gold text-[10px] font-black px-2 py-1 rounded-full border-2 border-white">0</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </div>
+
     <script>
         const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQK4lAzDWObCjowN-SuMvzqFpz46ePH4kDCYBrdMCY3A1Uz2pv_ooVR8h2c8JNNpZmKxsSVaq7dDOQc/pub?gid=0&single=true&output=csv';
         
         let allItems = [];
+        let cart = [];
         let activeCat = 'all';
 
         async function loadData() {
@@ -102,13 +137,11 @@
                     const parts = r.split(',');
                     const rawPrice = parts[3]?.replace(/"/g, '').trim() || '';
                     let mrp = '', offer = rawPrice;
-
                     if (rawPrice.includes('/')) {
                         const splitPrice = rawPrice.split('/');
                         mrp = splitPrice[0].trim();
                         offer = splitPrice[1].trim();
                     }
-
                     return { 
                         category: parts[0]?.replace(/"/g, '').trim().toUpperCase(), 
                         name: parts[1]?.replace(/"/g, '').trim(),
@@ -124,7 +157,6 @@
             } catch (e) { console.error("Data error"); }
         }
 
-        // UPDATED: Removed Rupee Symbol
         function formatPriceHTML(mrp, offer) {
             if (mrp) {
                 return `<span class="text-slate-400 line-through text-[11px] font-bold mr-2">${mrp}</span>
@@ -133,7 +165,73 @@
             return `<span class="text-navy font-black text-lg">${offer}</span>`;
         }
 
-        // UPDATED: Dynamic WhatsApp Messaging for Offers
+        // CART LOGIC
+        function toggleCart() {
+            document.getElementById('cartDrawer').classList.toggle('open');
+            document.getElementById('cartOverlay').classList.toggle('show');
+        }
+
+        function addToCart(name, price) {
+            const existing = cart.find(item => item.name === name);
+            if (existing) {
+                existing.qty += 1;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCart();
+            // Tiny animation effect
+            const btn = event.target;
+            btn.innerText = "Added! ✓";
+            setTimeout(() => { btn.innerText = "Add to Cart"; }, 800);
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const cartCount = document.getElementById('cartCount');
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            
+            cartCount.innerText = totalQty;
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = `<p class="text-slate-400 text-center mt-10 font-bold uppercase text-xs">Your cart is empty</p>`;
+                return;
+            }
+
+            cartItems.innerHTML = cart.map((item, index) => `
+                <div class="flex justify-between items-center bg-slate-50 p-4 rounded-2xl border border-slate-100 shadow-sm">
+                    <div class="flex-grow">
+                        <p class="font-black text-[12px] uppercase leading-tight">${item.name}</p>
+                        <p class="text-red-600 font-bold text-sm mt-1">${item.price}</p>
+                    </div>
+                    <div class="flex items-center gap-3 ml-4">
+                        <button onclick="changeQty(${index}, -1)" class="bg-navy text-white w-8 h-8 rounded-full flex items-center justify-center font-black">-</button>
+                        <span class="font-black text-lg w-4 text-center">${item.qty}</span>
+                        <button onclick="changeQty(${index}, 1)" class="bg-navy text-white w-8 h-8 rounded-full flex items-center justify-center font-black">+</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty <= 0) cart.splice(index, 1);
+            updateCart();
+        }
+
+        function sendOrder() {
+            if (cart.length === 0) return alert("Your cart is empty!");
+            
+            let message = "📦 *NEW ORDER - BHAVANI MART*\n\n";
+            cart.forEach((item, i) => {
+                message += `${i+1}. *${item.name}*\n   Qty: ${item.qty} | Price: ${item.price}\n\n`;
+            });
+            
+            const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            message += `━━━━━━━━━━━━━━\n*Total Items:* ${totalQty}\n\n_Please confirm this order._`;
+            
+            window.location.href = `https://wa.me/919182841682?text=${encodeURIComponent(message)}`;
+        }
+
         function renderOffers() {
             const offers = allItems.filter(i => i.category.includes('TODAY OFFER'));
             const section = document.getElementById('offerSection');
@@ -141,18 +239,17 @@
 
             if (offers.length > 0) {
                 section.classList.remove('hidden');
-                grid.innerHTML = offers.map(i => {
-                    const waMessage = encodeURIComponent(`Hi Bhavani Mart, I want to grab the deal on ${i.name} priced at ${i.offer}.`);
-                    return `
+                grid.innerHTML = offers.map(i => `
                     <div class="offer-card p-4 shadow-lg text-center flex flex-col justify-between">
                         <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" 
                              onerror="this.src='https://cdn-icons-png.flaticon.com/512/3081/3081840.png'"
                              class="h-24 mx-auto object-contain mb-2">
                         <h4 class="text-[11px] font-black text-navy uppercase h-8 overflow-hidden">${i.name}</h4>
                         <div class="my-2">${formatPriceHTML(i.mrp, i.offer)}</div>
-                        <a href="https://wa.me/919182841682?text=${waMessage}" class="block bg-navy text-gold text-[10px] py-2 rounded-lg font-black uppercase">Grab Deal</a>
+                        <button onclick="addToCart('${i.name.replace(/'/g, "\\'")}', '${i.offer}')" 
+                                class="bg-navy text-gold text-[10px] py-2 rounded-lg font-black uppercase">Add to Cart</button>
                     </div>
-                `}).join('');
+                `).join('');
             }
         }
 
@@ -168,15 +265,12 @@
             });
         }
 
-        // UPDATED: Dynamic WhatsApp Messaging for Products
         function render() {
             const grid = document.getElementById('productGrid');
             const query = document.getElementById('itemSearch').value.toLowerCase();
             const filtered = allItems.filter(i => (activeCat === 'all' || i.category === activeCat) && i.name.toLowerCase().includes(query));
 
-            grid.innerHTML = filtered.map(i => {
-                const waMessage = encodeURIComponent(`order ${i.name} `);
-                return `
+            grid.innerHTML = filtered.map(i => `
                 <div class="product-card shadow-lg p-4 flex flex-col justify-between border">
                     <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" 
                          onerror="this.src='https://cdn-icons-png.flaticon.com/512/3081/3081840.png'"
@@ -185,10 +279,11 @@
                         <p class="text-[9px] font-black text-blue-600 uppercase mb-1 opacity-70">${i.category}</p>
                         <h4 class="text-[12px] font-black text-navy uppercase h-8 overflow-hidden mb-2">${i.name}</h4>
                         <div class="mb-4">${formatPriceHTML(i.mrp, i.offer)}</div>
-                        <a href="https://wa.me/919182841682?text=${waMessage}" class="block bg-navy text-gold py-3 rounded-lg text-[11px] font-black text-center uppercase">Order Now</a>
+                        <button onclick="addToCart('${i.name.replace(/'/g, "\\'")}', '${i.offer}')" 
+                                class="block w-full bg-navy text-gold py-3 rounded-lg text-[11px] font-black text-center uppercase">Add to Cart</button>
                     </div>
                 </div>
-            `}).join('');
+            `).join('');
         }
 
         function setCategory(c) { activeCat = c; render(); }
