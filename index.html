@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bhavani Mart</title>
+    <title>Bhavani Mart | Wholesale Store</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -13,19 +13,26 @@
         .text-gold { color: #FFD700; }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         
-        /* The exact Search Bar style from your picture */
+        .hero-banner { 
+            background: linear-gradient(rgba(16, 29, 54, 0.7), rgba(16, 29, 54, 0.7)), 
+                        url('https://images.unsplash.com/photo-1534723452862-4c874018d66d?q=80&w=2000&auto=format&fit=crop'); 
+            background-size: cover; background-position: center;
+        }
+
+        /* EXACT SEARCH BAR STYLE FROM PHOTO */
         .search-container {
-            position: relative;
             background: white;
             border-radius: 12px;
             display: flex;
             align-items: center;
-            padding: 0 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            padding: 0 14px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            max-width: 400px;
+            margin: 0 auto;
         }
         .search-input {
             width: 100%;
-            padding: 12px 8px;
+            padding: 12px 10px;
             border: none;
             outline: none;
             color: #101D36;
@@ -34,16 +41,19 @@
             border-radius: 12px;
         }
 
+        /* CART DRAWER */
         .cart-drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
             background: white; z-index: 100; transition: 0.4s; color: #101D36;
         }
         .cart-drawer.open { right: 0; }
-        
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); display: none; z-index: 90;
         }
+        .cart-overlay.show { display: block; }
+
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
         .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
     </style>
 </head>
@@ -55,30 +65,27 @@
         </p>
     </div>
 
-    <nav class="sticky top-0 z-50 bg-navy p-4 flex justify-between items-center border-b border-gold/20">
+    <nav class="sticky top-0 z-50 bg-navy p-4 flex justify-between items-center border-b border-gold/20 shadow-xl">
         <div>
             <h1 class="font-[900] text-xl leading-none uppercase tracking-widest">
                 <span class="text-gold">BHAVANI</span> <span class="text-white">MART</span>
             </h1>
-            <p class="text-[9px] font-bold text-white/80 uppercase mt-1 tracking-widest">+91 9182841682</p>
+            <p class="text-[9px] font-bold text-white/80 uppercase mt-1">+91 9182841682</p>
         </div>
         <button onclick="toggleCart()" class="bg-green-600 text-white px-3 py-1.5 rounded-md font-black text-[10px] uppercase shadow-lg">My List</button>
     </nav>
 
-    <section class="py-8 text-center px-4">
-        <h2 class="text-2xl font-[900] text-gold uppercase mb-6 leading-none">BHAVANI HYPER MART</h2>
-        
-        <div class="max-w-md mx-auto px-2">
-            <div class="search-container">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." class="search-input">
-            </div>
+    <section class="hero-banner py-8 text-center px-4">
+        <h2 class="text-2xl font-[900] text-gold uppercase mb-6 leading-none tracking-tighter">BHAVANI HYPER MART</h2>
+        <div class="search-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." class="search-input">
         </div>
     </section>
 
-    <div class="p-4 text-center space-y-4 max-w-md mx-auto">
+    <div class="p-6 text-center space-y-4 max-w-md mx-auto">
         <h3 class="text-white font-black text-lg uppercase tracking-tight">
             <span class="text-gold">TIRED OF TYPING?</span><br>
             TAKE A PHOTO OF YOUR LIST!
@@ -89,9 +96,9 @@
         </div>
     </div>
 
-    <div class="bg-slate-50 min-h-screen mt-6">
+    <div class="bg-slate-50 min-h-screen">
         <div class="p-3 overflow-x-auto no-scrollbar flex gap-2" id="catFilters">
-            <button onclick="setCategory('all')" class="bg-navy text-gold px-4 py-2 rounded-lg text-[9px] font-black uppercase whitespace-nowrap">All Items</button>
+            <button onclick="setCategory('all')" class="bg-navy text-gold px-4 py-1.5 rounded-lg text-[9px] font-black uppercase whitespace-nowrap">All Items</button>
         </div>
 
         <main class="p-2 mb-24">
@@ -100,10 +107,10 @@
         </main>
     </div>
 
-    <div id="cartOverlay" class="fixed inset-0 bg-black/70 z-[90] hidden" onclick="toggleCart()"></div>
-    <div id="cartDrawer" class="cart-drawer flex flex-col p-6 shadow-2xl">
+    <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
+    <div id="cartDrawer" class="cart-drawer flex flex-col p-6">
         <div class="flex justify-between items-center border-b-2 pb-4 mb-4">
-            <h2 class="font-black text-xl text-navy">My List</h2>
+            <h2 class="font-black text-xl uppercase text-navy">My List</h2>
             <button onclick="toggleCart()" class="text-red-600 font-black text-xs">CLOSE</button>
         </div>
         <div id="cartItems" class="flex-grow overflow-y-auto space-y-3"></div>
@@ -148,17 +155,47 @@
                     </div>
                     <h4 class="text-[9px] font-[800] uppercase h-6 overflow-hidden leading-tight mb-1">${i.name}</h4>
                     
-                    <div class="flex flex-col mb-2">
+                    <div class="flex flex-col mb-1">
                         <span class="text-[11px] font-[900] leading-none">₹${i.price}</span>
                         <span class="text-[8px] text-slate-300 line-through font-normal mt-0.5">₹${i.mrp}</span>
                     </div>
 
-                    <button onclick="addToCart('${i.name.replace(/'/g, "\\'")}')" 
-                            class="w-full border border-green-600 text-green-700 py-1 rounded-lg text-[8px] font-black uppercase">
+                    <input type="text" id="qty-${idx}" placeholder="Qty (ex: 1kg)" 
+                           class="w-full text-[8px] border border-slate-200 rounded p-1 mb-1 outline-none focus:border-green-600 font-bold">
+
+                    <button onclick="addToCart(${idx}, '${i.name.replace(/'/g, "\\'")}')" 
+                            class="w-full border border-green-600 text-green-700 py-1 rounded-lg text-[8px] font-black uppercase bg-white">
                         ADD
                     </button>
                 </div>
             `).join('');
+        }
+
+        function addToCart(idx, name) {
+            const qtyInput = document.getElementById(`qty-${idx}`);
+            const qty = qtyInput.value || "1 unit";
+            cart.push({ name: name, qty: qty });
+            qtyInput.value = "";
+            updateCart();
+        }
+
+        function updateCart() {
+            const container = document.getElementById('cartItems');
+            container.innerHTML = cart.length === 0 ? '<p class="text-center py-10 text-[10px] font-bold text-navy">Empty List</p>' : 
+            cart.map((item, i) => `
+                <div class="flex justify-between items-center bg-slate-50 p-2 rounded-lg border text-navy">
+                    <p class="font-black text-[9px] uppercase">${item.name} (${item.qty})</p>
+                    <button onclick="removeItem(${i})" class="text-red-500 font-black px-2">✕</button>
+                </div>
+            `).join('');
+        }
+
+        function removeItem(i) { cart.splice(i, 1); updateCart(); }
+
+        function sendOrder() {
+            if (cart.length === 0) return;
+            let msg = "📦 *ORDER LIST*\n\n" + cart.map((item, i) => `${i+1}. *${item.name}* - ${item.qty}`).join('\n');
+            window.location.href = `https://wa.me/919182841682?text=${encodeURIComponent(msg)}`;
         }
 
         function generateCategoryButtons() {
@@ -178,21 +215,8 @@
             });
         }
 
-        function addToCart(name) { cart.push({name}); updateCart(); }
-        function updateCart() {
-            const container = document.getElementById('cartItems');
-            container.innerHTML = cart.map((item, i) => `<div class="p-2 border rounded text-navy flex justify-between text-[10px] font-bold"><span>${item.name}</span><button onclick="removeItem(${i})">✕</button></div>`).join('');
-        }
-        function removeItem(i) { cart.splice(i, 1); updateCart(); }
-        function sendOrder() {
-            let msg = "Order:\n" + cart.map(item => item.name).join('\n');
-            window.location.href = `https://wa.me/919182841682?text=${encodeURIComponent(msg)}`;
-        }
-        function toggleCart() { 
-            document.getElementById('cartDrawer').classList.toggle('open'); 
-            document.getElementById('cartOverlay').classList.toggle('hidden'); 
-        }
         function setCategory(c) { activeCat = c; render(); }
+        function toggleCart() { document.getElementById('cartDrawer').classList.toggle('open'); document.getElementById('cartOverlay').classList.toggle('show'); }
         loadData();
     </script>
 </body>
