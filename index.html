@@ -152,28 +152,56 @@
             const grid = document.getElementById('offersGrid');
             if (offerItems.length > 0) {
                 section.classList.remove('hidden');
-                grid.innerHTML = offerItems.map((i, idx) => `
-                    <div class="min-w-[135px] bg-white rounded-xl p-2 shadow-md text-navy flex flex-col">
-                        <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain mb-1">
-                        <h4 class="text-[9px] font-black uppercase text-center h-6 overflow-hidden mb-1">${i.name}</h4>
-                        <div class="flex justify-center items-center gap-1.5 mb-2">
-                            <span class="text-[11px] font-[900] text-navy">₹${i.price}</span>
-                            <span class="text-[9px] text-slate-400 line-through font-bold">₹${i.mrp}</span>
-                        </div>
-                        <button onclick="addToCart('off-${idx}', '${i.name.replace(/'/g, "\\'")}')" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-[9px] font-black uppercase">Add</button>
-                    </div>
-                `).join('');
+              grid.innerHTML = offerItems.map((i, idx) => {
+    const prices = i.price.split('/');
+    const mrp = prices[0] ? prices[0].trim() : '';
+    const discountPrice = prices[1] ? prices[1].trim() : '';
+
+    return `
+        <div class="min-w-[135px] bg-white rounded-xl p-2 shadow-md text-navy flex flex-col">
+            <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain mb-1">
+            <h4 class="text-[9px] font-black uppercase text-center h-6 overflow-hidden mb-1">${i.name}</h4>
+            <div class="flex flex-col items-center mb-2">
+                ${discountPrice ? `
+                    <span class="text-[11px] font-[900] text-navy leading-none">₹${discountPrice}</span>
+                    <span class="text-[8px] text-slate-400 line-through font-medium mt-0.5">₹${mrp}</span>
+                ` : `
+                    <span class="text-[11px] font-[900] text-navy leading-none">₹${mrp}</span>
+                `}
+            </div>
+            <button id="btn-off-${idx}" onclick="addToCart('off-${idx}', '${i.name.replace(/'/g, "\\'")}')" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-[9px] font-black uppercase transition-all">Add</button>
+        </div>
+    `;
+}).join('');
             }
         }
 
-        function addToCart(id, name) {
-            const isOffer = id.startsWith('off');
-            const qtyInput = document.getElementById(`qty-prod-${id.split('-')[1]}`);
-            const qtyVal = (!isOffer && qtyInput) ? (qtyInput.value || "1 unit") : "1 unit";
-            cart.push({ name: name, qty: qtyVal });
-            localStorage.setItem('bhavaniCart', JSON.stringify(cart));
-            updateCart();
-            if(qtyInput) qtyInput.value = "";
+       function addToCart(id, name) {
+    const isOffer = id.startsWith('off');
+    const qtyInput = document.getElementById(`qty-prod-${id.split('-')[1]}`);
+    const qtyVal = (!isOffer && qtyInput) ? (qtyInput.value || "1 unit") : "1 unit";
+    
+    // Add to cart logic
+    cart.push({ name: name, qty: qtyVal });
+    localStorage.setItem('bhavaniCart', JSON.stringify(cart));
+    updateCart();
+    if(qtyInput) qtyInput.value = "";
+
+    // THE "FEEL": Visual Feedback
+    const btn = event.target;
+    const originalText = btn.innerText;
+    const originalBg = btn.style.backgroundColor;
+
+    btn.innerText = "ADDED! ✓";
+    btn.classList.add('bg-green-500'); 
+    btn.style.transform = "scale(0.95)"; // Slight shrink feel
+
+    setTimeout(() => {
+        btn.innerText = originalText;
+        btn.classList.remove('bg-green-500');
+        btn.style.transform = "scale(1)";
+    }, 800);
+}
         }
 
         function updateCart() {
@@ -229,7 +257,7 @@
                         <div class="flex flex-col items-center mb-2">
                             ${discountPrice ? `
                                 <span class="text-[11px] font-black text-navy leading-none">₹${discountPrice}</span>
-                                <span class="text-[8px] text-slate-300 line-through font-normal mt-0.5">₹${mrp}</span>
+                                <span class="text-[8px] text-slate-500 line-through font-normal mt-0.5">₹${mrp}</span>
                             ` : `
                                 <span class="text-[11px] font-black text-navy leading-none">₹${mrp}</span>
                             `}
