@@ -17,6 +17,14 @@
         
         .product-card { border-radius: 15px; background: white; color: #101D36; transition: 0.3s; }
 
+        /* Restoring the Hero Background Style */
+        .hero-banner { 
+            background: linear-gradient(rgba(16, 29, 54, 0.7), rgba(16, 29, 54, 0.7)), 
+                        url('https://images.unsplash.com/photo-1534723452862-4c874018d66d?q=80&w=2000&auto=format&fit=crop'); 
+            background-size: cover; 
+            background-position: center;
+        }
+
         .cart-drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
             background: white; z-index: 100; transition: 0.4s; color: #101D36;
@@ -43,6 +51,12 @@
         </div>
         <button onclick="toggleCart()" class="bg-green-600 text-white px-3 py-1.5 rounded-md font-black text-[10px] uppercase shadow-lg">My List</button>
     </nav>
+
+    <section class="hero-banner py-12 text-center text-white px-4 border-b-4 border-gold">
+        <h2 class="text-3xl md:text-5xl font-[900] text-gold uppercase tracking-tighter mb-1 leading-none">BHAVANI HYPER MART</h2>
+        <p class="text-[10px] md:text-sm font-black text-white tracking-[0.2em] uppercase">KARMANGHAT'S BIGGEST 3000 SQ. FT. STORE</p>
+        <p class="text-[9px] mt-2 opacity-80 uppercase font-bold text-white">Near Pochamma Temple, Hyderabad</p>
+    </section>
 
     <div class="p-4 space-y-3 max-w-md mx-auto">
         <a href="https://wa.me/919182841682?text=Hi, sharing my list photo." 
@@ -126,7 +140,7 @@
             const btn = event.target;
             btn.innerText = "ADDED ✓";
             setTimeout(() => { btn.innerText = "ADD TO LIST"; }, 800);
-            qtyInput.value = ""; // Clear input after adding
+            qtyInput.value = "";
         }
 
         function updateCart() {
