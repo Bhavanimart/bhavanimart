@@ -107,10 +107,10 @@
     <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
     <div id="cartDrawer" class="cart-drawer flex flex-col p-6">
         <div class="flex justify-between items-center border-b-2 pb-4 mb-4">
-            <h2 class="font-black text-xl uppercase tracking-tighter">My List</h2>
+            <h2 class="font-black text-xl uppercase tracking-tighter text-navy">My List</h2>
             <button onclick="toggleCart()" class="text-red-600 font-black text-xs uppercase">Close</button>
         </div>
-        <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-3 text-navy"></div>
+        <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-3"></div>
         <button onclick="sendOrder()" class="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase mt-4 shadow-xl">Send to WhatsApp</button>
     </div>
 
@@ -135,7 +135,8 @@
                     return { 
                         category: parts[0]?.replace(/"/g, '').trim().toUpperCase() || 'GENERAL', 
                         name: parts[1]?.replace(/"/g, '').trim() || '',
-                        img: parts[2]?.replace(/"/g, '').trim() || ''
+                        img: parts[2]?.replace(/"/g, '').trim() || '',
+                        price: parts[3]?.replace(/"/g, '').trim() || '' // Price is usually the 4th column
                     };
                 }).filter(i => i.name.length > 1);
                 generateCategoryButtons();
@@ -154,7 +155,8 @@
                 grid.innerHTML = offerItems.map((i, idx) => `
                     <div class="min-w-[130px] bg-white rounded-xl p-2 shadow-md text-navy">
                         <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-14 mx-auto object-contain">
-                        <h4 class="text-[9px] font-black uppercase text-center my-1 h-6 overflow-hidden">${i.name}</h4>
+                        <h4 class="text-[9px] font-black uppercase text-center mt-1 h-6 overflow-hidden">${i.name}</h4>
+                        <p class="text-center text-[10px] font-black text-red-600 mb-1">${i.price ? '₹' + i.price : ''}</p>
                         <button onclick="addToCart('off-${idx}', '${i.name}')" class="w-full bg-red-600 text-white py-1 rounded text-[8px] font-black uppercase">Add</button>
                     </div>
                 `).join('');
@@ -162,7 +164,7 @@
         }
 
         function addToCart(id, name) {
-            const qtyInput = document.getElementById(`qty-${id}`);
+            const qtyInput = document.getElementById(`qty-prod-${id.split('-')[1]}`);
             const qtyVal = qtyInput ? (qtyInput.value || "1 unit") : "1 unit";
             cart.push({ name: name, qty: qtyVal });
             localStorage.setItem('bhavaniCart', JSON.stringify(cart));
@@ -173,7 +175,7 @@
         function updateCart() {
             document.getElementById('cartCount').innerText = cart.length;
             const container = document.getElementById('cartItems');
-            container.innerHTML = cart.length === 0 ? '<p class="text-center py-10 opacity-50 uppercase text-xs font-bold">List is empty</p>' : 
+            container.innerHTML = cart.length === 0 ? '<p class="text-center py-10 opacity-50 uppercase text-xs font-bold text-navy">List is empty</p>' : 
             cart.map((item, index) => `
                 <div class="flex justify-between items-center bg-slate-100 p-3 rounded-xl border text-navy">
                     <div><p class="font-black text-[10px] uppercase">${item.name}</p><p class="text-blue-600 font-bold text-[9px]">Qty: ${item.qty}</p></div>
@@ -211,7 +213,8 @@
                     <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-20 mx-auto object-contain mb-1">
                     <div class="text-center">
                         <p class="text-[7px] font-bold text-blue-600 uppercase mb-0.5">${i.category}</p>
-                        <h4 class="text-[10px] font-[900] uppercase h-7 overflow-hidden leading-tight mb-2">${i.name}</h4>
+                        <h4 class="text-[10px] font-[900] uppercase h-7 overflow-hidden leading-tight mb-1">${i.name}</h4>
+                        <p class="text-[11px] font-black text-navy mb-2">${i.price ? '₹' + i.price : 'Ask Store'}</p>
                         <div class="space-y-1">
                             <div class="flex items-center bg-slate-100 rounded border border-slate-200">
                                 <span class="text-[8px] font-black px-1.5 text-slate-400">QTY</span>
