@@ -64,14 +64,9 @@
         </nav>
     </div>
 
-    <section class="hero-banner py-8 text-center px-4">
-        <h2 class="text-2xl font-[900] text-gold uppercase mb-6 leading-none">BHAVANI HYPER MART</h2>
-        <div class="search-container">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." class="search-input">
-        </div>
+   <section class="hero-banner py-12 text-center text-white px-4">
+        <h2 class="text-3xl font-[900] text-gold uppercase tracking-tighter mb-1 leading-none">BHAVANI HYPER MART</h2>
+        <p class="text-[14px] font-black text-white tracking-[0.1em] uppercase">KARMANGHAT'S BIGGEST 3000 SQ. FT. STORE</p>
     </section>
 
     <div id="offersSection" class="hidden bg-gold p-4 text-navy shadow-inner">
@@ -79,17 +74,24 @@
         <div id="offersGrid" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
     </div>
 
-    <div class="p-6 text-center space-y-4 max-w-md mx-auto">
-        <h3 class="text-white font-black text-lg uppercase tracking-tight">
+   <div class="p-6 text-center space-y-4 max-w-md mx-auto">
+        <h3 class="text-white font-black text-lg uppercase tracking-tight leading-tight">
             <span class="text-gold">TIRED OF TYPING?</span><br>
             TAKE A PHOTO OF YOUR LIST!
         </h3>
-        <div class="grid grid-cols-2 gap-3 px-2">
-            <a href="https://wa.me/919182841682" class="bg-gold text-navy py-4 rounded-full text-[11px] font-[900] flex items-center justify-center gap-2 uppercase shadow-xl">📸 WhatsApp Photo</a>
-            <a href="https://www.google.com/maps/dir//Bhavani+Mart+Karmanghat" class="bg-white text-navy py-4 rounded-full text-[11px] font-[900] flex items-center justify-center gap-2 uppercase border-2 border-gold shadow-xl">📍 Directions</a>
+        <div class="grid grid-cols-2 gap-3">
+            <a href="https://wa.me/919182841682" class="bg-gold text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest shadow-xl">📸 WhatsApp</a>
+            <a href="https://maps.google.com" class="bg-white text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest border-2 border-gold shadow-xl">📍 Directions</a>
         </div>
     </div>
 
+    <div class="bg-navy p-4 border-y border-white/10 shadow-2xl sticky top-[60px] z-40">
+        <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." 
+               class="w-full bg-white p-3 rounded-xl border border-white/20 text-navy text-sm mb-3 outline-none focus:border-gold font-bold">
+        <div class="flex gap-2 overflow-x-auto no-scrollbar" id="catFilters">
+            <button onclick="setCategory('all')" class="bg-gold text-navy px-5 py-2 rounded-lg text-[10px] font-black uppercase whitespace-nowrap">All Items</button>
+        </div>
+    </div>
     <div class="bg-navy p-4 border-y border-white/10">
         <div class="flex gap-2 overflow-x-auto no-scrollbar" id="catFilters">
             <button onclick="setCategory('all')" class="bg-gold text-navy px-5 py-2 rounded-lg text-[10px] font-black uppercase whitespace-nowrap">All Items</button>
