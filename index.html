@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -23,7 +24,6 @@
             background-position: center;
         }
 
-        /* Cart Drawer Styles */
         .cart-drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
             background: white; z-index: 100; transition: 0.4s; color: #101D36;
@@ -51,7 +51,7 @@
     <div class="sticky top-0 z-50">
         <div class="bg-red-600 py-1.5 overflow-hidden border-b border-white/10">
             <p class="animate-marquee text-white font-[900] text-[10px] uppercase tracking-tighter">
-                🔥 SPECIAL DISCOUNT ON EVERY ITEM! VISIT TODAY & SAVE BIG! 🔥 🔥 SPECIAL DISCOUNT ON EVERY ITEM! VISIT TODAY & SAVE BIG! 🔥
+                🔥 SPECIAL DISCOUNT ON EVERY ITEM! VISIT TODAY & SAVE BIG! 🔥 HURRY! LIMITED TIME OFFERS! 🔥
             </p>
         </div>
 
@@ -60,21 +60,15 @@
                 <h1 class="font-[900] text-xl leading-none uppercase tracking-widest">
                     <span class="text-gold">BHAVANI</span> <span class="text-white">MART</span>
                 </h1>
-                <div class="flex gap-3 mt-1 items-center">
-                    <p class="text-[9px] font-bold text-white/80 uppercase tracking-widest">+91 9182841682</p>
-                    <a  href="https://maps.google.com" class="bg-white text-navy py-1 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest border-2 border-gold shadow-xl"> 📍Visit store </a>
+                <div class="mt-2">
+                    <p class="text-[9px] font-bold text-white/80 uppercase tracking-widest mb-1">+91 9182841682</p>
+                    <a href="https://maps.google.com" target="_blank" class="inline-flex items-center bg-white text-navy px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-tighter shadow-sm">
+                        <span class="mr-1">📍</span> VISIT STORE
+                    </a>
                 </div>
             </div>
             <button onclick="toggleCart()" class="bg-green-600 text-white px-3 py-1.5 rounded-md font-black text-[10px] uppercase shadow-lg">My List</button>
         </nav>
-
-        <div class="bg-navy p-4 border-b border-white/10 shadow-2xl">
-            <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search items (Rice, Soap, Oil...)" 
-                   class="w-full bg-white/10 p-3 rounded-xl border border-white/20 text-white text-sm mb-3 outline-none focus:border-gold font-bold">
-            <div class="flex gap-2 overflow-x-auto no-scrollbar" id="catFilters">
-                <button onclick="setCategory('all')" class="bg-gold text-navy px-5 py-2 rounded-lg text-[10px] font-black uppercase whitespace-nowrap">All Items</button>
-            </div>
-        </div>
     </div>
 
     <section class="hero-banner py-12 text-center text-white px-4">
@@ -82,23 +76,31 @@
         <p class="text-[10px] font-black text-white tracking-[0.2em] uppercase">KARMANGHAT'S BIGGEST 3000 SQ. FT. STORE</p>
     </section>
 
+    <div id="offersSection" class="hidden bg-gold p-4 text-navy">
+        <h3 class="font-black text-xs uppercase mb-3 tracking-widest text-center border-b border-navy/20 pb-2">Today's Special Offers</h3>
+        <div id="offersGrid" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
+    </div>
+
     <div class="p-6 text-center space-y-4 max-w-md mx-auto">
         <h3 class="text-white font-black text-lg uppercase tracking-tight leading-tight">
             <span class="text-gold">TIRED OF TYPING?</span><br>
             TAKE A PHOTO OF YOUR LIST!
         </h3>
         <div class="grid grid-cols-2 gap-3">
-            <a href="https://wa.me/919182841682" class="bg-gold text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest shadow-xl">📸 WhatsApp List Photo</a>
+            <a href="https://wa.me/919182841682" class="bg-gold text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest shadow-xl">📸 WhatsApp</a>
             <a href="https://maps.google.com" class="bg-white text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest border-2 border-gold shadow-xl">📍 Directions</a>
         </div>
     </div>
 
-    <div id="offersSection" class="hidden px-4 pt-4">
-        <h3 class="text-white font-black text-xs uppercase mb-3 tracking-widest border-l-4 border-red-600 pl-2">Today's Special Offers</h3>
-        <div id="offersGrid" class="flex gap-4 overflow-x-auto no-scrollbar pb-4"></div>
+    <div class="bg-navy p-4 border-y border-white/10 shadow-2xl">
+        <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." 
+               class="w-full bg-white/10 p-3 rounded-xl border border-white/20 text-white text-sm mb-3 outline-none focus:border-gold font-bold">
+        <div class="flex gap-2 overflow-x-auto no-scrollbar" id="catFilters">
+            <button onclick="setCategory('all')" class="bg-gold text-navy px-5 py-2 rounded-lg text-[10px] font-black uppercase whitespace-nowrap">All Items</button>
+        </div>
     </div>
 
-    <main class="p-2 mb-24">
+    <main class="p-2 mb-24 mt-4">
         <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
     </main>
 
@@ -108,7 +110,7 @@
             <h2 class="font-black text-xl uppercase tracking-tighter">My List</h2>
             <button onclick="toggleCart()" class="text-red-600 font-black text-xs uppercase">Close</button>
         </div>
-        <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-3"></div>
+        <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-3 text-navy"></div>
         <button onclick="sendOrder()" class="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase mt-4 shadow-xl">Send to WhatsApp</button>
     </div>
 
@@ -150,8 +152,8 @@
             if (offerItems.length > 0) {
                 section.classList.remove('hidden');
                 grid.innerHTML = offerItems.map((i, idx) => `
-                    <div class="min-w-[140px] bg-white rounded-xl p-2 shadow-lg border-2 border-red-500 text-navy">
-                        <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain">
+                    <div class="min-w-[130px] bg-white rounded-xl p-2 shadow-md text-navy">
+                        <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-14 mx-auto object-contain">
                         <h4 class="text-[9px] font-black uppercase text-center my-1 h-6 overflow-hidden">${i.name}</h4>
                         <button onclick="addToCart('off-${idx}', '${i.name}')" class="w-full bg-red-600 text-white py-1 rounded text-[8px] font-black uppercase">Add</button>
                     </div>
