@@ -19,9 +19,15 @@
         .hero-banner { 
             background: linear-gradient(rgba(16, 29, 54, 0.6), rgba(16, 29, 54, 0.6)), 
                         url('https://images.unsplash.com/photo-1534723452862-4c874018d66d?q=80&w=2000&auto=format&fit=crop'); 
-            background-size: cover; 
-            background-position: center;
+            background-size: cover; background-position: center;
         }
+
+        /* EXACT SEARCH BAR STYLE FROM PHOTO */
+        .search-container {
+            background: white; border-radius: 12px; display: flex; align-items: center;
+            padding: 0 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); max-width: 400px; margin: 0 auto;
+        }
+        .search-input { width: 100%; padding: 12px 10px; border: none; outline: none; color: #101D36; font-weight: 700; font-size: 14px; }
 
         .cart-drawer {
             position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%;
@@ -34,15 +40,8 @@
         }
         .cart-overlay.show { display: block; }
 
-        @keyframes marquee {
-            0% { transform: translateX(100%); }
-            100% { transform: translateX(-100%); }
-        }
-        .animate-marquee {
-            display: inline-block;
-            white-space: nowrap;
-            animation: marquee 15s linear infinite;
-        }
+        @keyframes marquee { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+        .animate-marquee { display: inline-block; white-space: nowrap; animation: marquee 15s linear infinite; }
     </style>
 </head>
 <body>
@@ -59,63 +58,61 @@
                 <h1 class="font-[900] text-xl leading-none uppercase tracking-widest">
                     <span class="text-gold">BHAVANI</span> <span class="text-white">MART</span>
                 </h1>
-                <div class="flex items-center gap-2 mt-2">
-                    <p class="text-[9px] font-bold text-white/80 uppercase tracking-widest">+91 9182841682</p>
-                    <a href="https://maps.google.com" target="_blank" class="inline-flex items-center bg-white text-navy px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter shadow-sm">
-                        <span class="mr-0.5 text-[7px]">📍</span> VISIT STORE
-                    </a>
-                </div>
+                <p class="text-[9px] font-bold text-white/80 uppercase mt-1 tracking-widest">+91 9182841682</p>
             </div>
             <button onclick="toggleCart()" class="bg-green-600 text-white px-3 py-1.5 rounded-md font-black text-[10px] uppercase shadow-lg">My List</button>
         </nav>
     </div>
 
-    <section class="hero-banner py-12 text-center text-white px-4">
-        <h2 class="text-3xl font-[900] text-gold uppercase tracking-tighter mb-1 leading-none">BHAVANI HYPER MART</h2>
-        <p class="text-[10px] font-black text-white tracking-[0.2em] uppercase">KARMANGHAT'S BIGGEST 3000 SQ. FT. STORE</p>
+    <section class="hero-banner py-8 text-center px-4">
+        <h2 class="text-2xl font-[900] text-gold uppercase mb-6 leading-none">BHAVANI HYPER MART</h2>
+        <div class="search-container">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." class="search-input">
+        </div>
     </section>
 
-    <div id="offersSection" class="hidden bg-gold p-4 text-navy">
+    <div id="offersSection" class="hidden bg-gold p-4 text-navy shadow-inner">
         <h3 class="font-black text-xs uppercase mb-3 tracking-widest text-center border-b border-navy/20 pb-2">Today's Special Offers</h3>
         <div id="offersGrid" class="flex gap-4 overflow-x-auto no-scrollbar pb-2"></div>
     </div>
 
     <div class="p-6 text-center space-y-4 max-w-md mx-auto">
-        <h3 class="text-white font-black text-lg uppercase tracking-tight leading-tight">
+        <h3 class="text-white font-black text-lg uppercase tracking-tight">
             <span class="text-gold">TIRED OF TYPING?</span><br>
             TAKE A PHOTO OF YOUR LIST!
         </h3>
-        <div class="grid grid-cols-2 gap-3">
-            <a href="https://wa.me/919182841682" class="bg-gold text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest shadow-xl">📸 WhatsApp</a>
-            <a href="https://maps.google.com" class="bg-white text-navy py-3 rounded-full text-[10px] font-[900] flex items-center justify-center gap-2 uppercase tracking-widest border-2 border-gold shadow-xl">📍 Directions</a>
+        <div class="grid grid-cols-2 gap-3 px-2">
+            <a href="https://wa.me/919182841682" class="bg-gold text-navy py-4 rounded-full text-[11px] font-[900] flex items-center justify-center gap-2 uppercase shadow-xl">📸 WhatsApp Photo</a>
+            <a href="https://www.google.com/maps/dir//Bhavani+Mart+Karmanghat" class="bg-white text-navy py-4 rounded-full text-[11px] font-[900] flex items-center justify-center gap-2 uppercase border-2 border-gold shadow-xl">📍 Directions</a>
         </div>
     </div>
 
-    <div class="bg-navy p-4 border-y border-white/10 shadow-2xl">
-        <input type="text" id="itemSearch" onkeyup="render()" placeholder="Search 10,000+ items..." 
-               class="w-full bg-white/10 p-3 rounded-xl border border-white/20 text-white text-sm mb-3 outline-none focus:border-gold font-bold">
+    <div class="bg-navy p-4 border-y border-white/10">
         <div class="flex gap-2 overflow-x-auto no-scrollbar" id="catFilters">
             <button onclick="setCategory('all')" class="bg-gold text-navy px-5 py-2 rounded-lg text-[10px] font-black uppercase whitespace-nowrap">All Items</button>
         </div>
     </div>
 
     <main class="p-2 mb-24 mt-4">
-        <div id="productGrid" class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
+        <div id="productGrid" class="grid grid-cols-3 md:grid-cols-6 gap-2"></div>
     </main>
 
+    <div onclick="toggleCart()" class="fixed bottom-6 right-6 bg-red-600 text-white p-4 rounded-full shadow-2xl z-[60] cursor-pointer border-2 border-white">
+        <span id="cartCount" class="absolute -top-1 -right-1 bg-navy text-gold text-[10px] font-black px-2 py-0.5 rounded-full border-2 border-white">0</span>
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </div>
+
     <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
-    <div id="cartDrawer" class="cart-drawer flex flex-col p-6">
+    <div id="cartDrawer" class="cart-drawer flex flex-col p-6 shadow-2xl">
         <div class="flex justify-between items-center border-b-2 pb-4 mb-4 text-navy">
             <h2 class="font-black text-xl uppercase tracking-tighter">My List</h2>
             <button onclick="toggleCart()" class="text-red-600 font-black text-xs uppercase">Close</button>
         </div>
         <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-3"></div>
         <button onclick="sendOrder()" class="w-full bg-green-600 text-white py-4 rounded-xl font-black uppercase mt-4 shadow-xl">Send to WhatsApp</button>
-    </div>
-
-    <div onclick="toggleCart()" class="fixed bottom-6 right-6 bg-red-600 text-white p-4 rounded-full shadow-2xl z-[60] cursor-pointer">
-        <span id="cartCount" class="absolute -top-1 -right-1 bg-navy text-gold text-[10px] font-black px-2 py-0.5 rounded-full border-2 border-white">0</span>
-        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
     </div>
 
     <script>
@@ -132,13 +129,12 @@
                 allItems = rows.map(r => {
                     const parts = r.split(',');
                     return { 
-                        category: parts[0]?.replace(/"/g, '').trim().toUpperCase() || 'GENERAL', 
-                        name: parts[1]?.replace(/"/g, '').trim() || '',
-                        img: parts[2]?.replace(/"/g, '').trim() || '',
-                        price: parts[3]?.replace(/"/g, '').trim() || '',
-                        mrp: parts[4]?.replace(/"/g, '').trim() || ''
+                        category: (parts[0] || '').replace(/"/g, '').trim().toUpperCase() || 'GENERAL', 
+                        name: (parts[1] || '').replace(/"/g, '').trim(),
+                        img: (parts[2] || '').replace(/"/g, '').trim(),
+                        price: (parts[3] || '').replace(/"/g, '').trim()
                     };
-                }).filter(i => i.name.length > 1);
+                }).filter(i => i.name && i.name.length > 1);
                 generateCategoryButtons();
                 renderOffers();
                 updateCart();
@@ -152,72 +148,76 @@
             const grid = document.getElementById('offersGrid');
             if (offerItems.length > 0) {
                 section.classList.remove('hidden');
-              grid.innerHTML = offerItems.map((i, idx) => {
-    const prices = i.price.split('/');
-    const mrp = prices[0] ? prices[0].trim() : '';
-    const discountPrice = prices[1] ? prices[1].trim() : '';
-
-    return `
-        <div class="min-w-[135px] bg-white rounded-xl p-2 shadow-md text-navy flex flex-col">
-            <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain mb-1">
-            <h4 class="text-[9px] font-black uppercase text-center h-6 overflow-hidden mb-1">${i.name}</h4>
-            <div class="flex flex-col items-center mb-2">
-                ${discountPrice ? `
-                    <span class="text-[11px] font-[900] text-navy leading-none">₹${discountPrice}</span>
-                    <span class="text-[8px] text-slate-400 line-through font-medium mt-0.5">₹${mrp}</span>
-                ` : `
-                    <span class="text-[11px] font-[900] text-navy leading-none">₹${mrp}</span>
-                `}
-            </div>
-            <button id="btn-off-${idx}" onclick="addToCart('off-${idx}', '${i.name.replace(/'/g, "\\'")}')" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-[9px] font-black uppercase transition-all">Add</button>
-        </div>
-    `;
-}).join('');
+                grid.innerHTML = offerItems.map((i, idx) => {
+                    const prices = i.price.split('/');
+                    const mrp = prices[0] ? prices[0].trim() : '';
+                    const disc = prices[1] ? prices[1].trim() : '';
+                    return `
+                        <div class="min-w-[130px] bg-white rounded-xl p-2 shadow-md text-navy flex flex-col">
+                            <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain mb-1">
+                            <h4 class="text-[9px] font-black uppercase text-center h-6 overflow-hidden mb-1">${i.name}</h4>
+                            <div class="flex flex-col items-center mb-1">
+                                <span class="text-[11px] font-[900] leading-none">₹${disc || mrp}</span>
+                                ${disc ? `<span class="text-[8px] text-slate-400 line-through font-medium">₹${mrp}</span>` : ''}
+                            </div>
+                            <button onclick="addToCart('off-${idx}', '${i.name.replace(/'/g, "\\'")}', true)" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-[9px] font-black uppercase">Add</button>
+                        </div>`;
+                }).join('');
             }
         }
 
-       function addToCart(id, name) {
-    const isOffer = id.startsWith('off');
-    const qtyInput = document.getElementById(`qty-prod-${id.split('-')[1]}`);
-    const qtyVal = (!isOffer && qtyInput) ? (qtyInput.value || "1 unit") : "1 unit";
-    
-    // Add to cart logic
-    cart.push({ name: name, qty: qtyVal });
-    localStorage.setItem('bhavaniCart', JSON.stringify(cart));
-    updateCart();
-    if(qtyInput) qtyInput.value = "";
+        function render() {
+            const grid = document.getElementById('productGrid');
+            const query = document.getElementById('itemSearch').value.toLowerCase();
+            const filtered = allItems.filter(i => !i.category.includes('OFFER') && (activeCat === 'all' || i.category === activeCat) && i.name.toLowerCase().includes(query));
+            
+            grid.innerHTML = filtered.map((i, idx) => {
+                const prices = i.price.split('/');
+                const mrp = prices[0] ? prices[0].trim() : '';
+                const disc = prices[1] ? prices[1].trim() : '';
+                return `
+                <div class="product-card p-2 flex flex-col border shadow-sm">
+                    <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain mb-1">
+                    <h4 class="text-[9px] font-[900] uppercase h-6 overflow-hidden leading-tight mb-1">${i.name}</h4>
+                    <div class="flex flex-col mb-1">
+                        <span class="text-[11px] font-black text-navy leading-none">₹${disc || mrp}</span>
+                        ${disc ? `<span class="text-[8px] text-slate-300 line-through font-normal">₹${mrp}</span>` : ''}
+                    </div>
+                    <div class="space-y-1">
+                        <input type="text" id="qty-prod-${idx}" placeholder="Qty" class="w-full border border-slate-200 rounded p-1 text-[8px] font-bold outline-none text-navy">
+                        <button onclick="addToCart('prod-${idx}', '${i.name.replace(/'/g, "\\'")}', false)" class="w-full bg-navy text-gold py-1.5 rounded text-[8px] font-black uppercase">Add</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
 
-    // THE "FEEL": Visual Feedback
-    const btn = event.target;
-    const originalText = btn.innerText;
-    const originalBg = btn.style.backgroundColor;
-
-    btn.innerText = "ADDED! ✓";
-    btn.classList.add('bg-green-500'); 
-    btn.style.transform = "scale(0.95)"; // Slight shrink feel
-
-    setTimeout(() => {
-        btn.innerText = originalText;
-        btn.classList.remove('bg-green-500');
-        btn.style.transform = "scale(1)";
-    }, 800);
-}
+        function addToCart(id, name, isOffer) {
+            const qtyInput = document.getElementById(`qty-${id}`);
+            const qtyVal = isOffer ? "1 unit" : (qtyInput.value || "1 unit");
+            cart.push({ name: name, qty: qtyVal });
+            localStorage.setItem('bhavaniCart', JSON.stringify(cart));
+            if(qtyInput) qtyInput.value = "";
+            updateCart();
+            
+            const btn = event.target;
+            const oldTxt = btn.innerText;
+            btn.innerText = "✓";
+            btn.classList.add('bg-green-600');
+            setTimeout(() => { btn.innerText = oldTxt; btn.classList.remove('bg-green-600'); }, 700);
         }
 
         function updateCart() {
             document.getElementById('cartCount').innerText = cart.length;
             const container = document.getElementById('cartItems');
-            container.innerHTML = cart.length === 0 ? '<p class="text-center py-10 opacity-50 uppercase text-xs font-bold text-navy">List is empty</p>' : 
+            container.innerHTML = cart.length === 0 ? '<p class="text-center py-10 opacity-50 uppercase text-xs font-bold text-navy">Empty List</p>' : 
             cart.map((item, index) => `
-                <div class="flex justify-between items-center bg-slate-100 p-3 rounded-xl border text-navy">
-                    <div><p class="font-black text-[10px] uppercase">${item.name}</p><p class="text-blue-600 font-bold text-[9px]">Qty: ${item.qty}</p></div>
+                <div class="flex justify-between items-center bg-slate-100 p-2 rounded-lg border text-navy">
+                    <div class="text-[9px] font-black uppercase leading-tight">${item.name}<br><span class="text-blue-600 font-bold">Qty: ${item.qty}</span></div>
                     <button onclick="removeItem(${index})" class="text-red-500 font-black px-2">✕</button>
-                </div>
-            `).join('');
+                </div>`).join('');
         }
 
         function removeItem(index) { cart.splice(index, 1); localStorage.setItem('bhavaniCart', JSON.stringify(cart)); updateCart(); }
-
         function sendOrder() {
             if (cart.length === 0) return;
             let msg = "📦 *ORDER - BHAVANI MART*\n\n" + cart.map((item, i) => `${i+1}. *${item.name}* (${item.qty})`).join('\n');
@@ -229,50 +229,16 @@
             const container = document.getElementById('catFilters');
             cats.forEach(c => {
                 const btn = document.createElement('button');
-                btn.className = "bg-white/10 text-white border border-white/20 px-4 py-2 rounded-lg text-[10px] font-black uppercase whitespace-nowrap";
+                btn.className = "bg-white/10 text-white border border-white/20 px-4 py-1.5 rounded-lg text-[9px] font-black uppercase whitespace-nowrap";
                 btn.innerText = c;
-                btn.onclick = () => setCategory(c);
+                btn.onclick = (e) => {
+                    activeCat = c;
+                    document.querySelectorAll('#catFilters button').forEach(b => b.classList.replace('bg-gold', 'bg-white/10'));
+                    e.target.classList.replace('bg-white/10', 'bg-gold');
+                    render();
+                };
                 container.appendChild(btn);
             });
-        }
-
-        function render() {
-            const grid = document.getElementById('productGrid');
-            const query = document.getElementById('itemSearch').value.toLowerCase();
-            const filtered = allItems.filter(i => !i.category.includes('OFFER') && (activeCat === 'all' || i.category === activeCat) && i.name.toLowerCase().includes(query));
-            
-            grid.innerHTML = filtered.map((i, idx) => {
-                // POINT 1: Price Splitting (Checks for / in your price column)
-                const prices = i.price.split('/');
-                const mrp = prices[0] ? prices[0].trim() : '';
-                const discountPrice = prices[1] ? prices[1].trim() : '';
-
-                return `
-                <div class="product-card p-2 flex flex-col justify-between border shadow-md">
-                    <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-20 mx-auto object-contain mb-1">
-                    <div class="text-center">
-                        <p class="text-[7px] font-bold text-blue-600 uppercase mb-0.5">${i.category}</p>
-                        <h4 class="text-[10px] font-[900] uppercase h-7 overflow-hidden leading-tight mb-1">${i.name}</h4>
-                        
-                        <div class="flex flex-col items-center mb-2">
-                            ${discountPrice ? `
-                                <span class="text-[11px] font-black text-navy leading-none">₹${discountPrice}</span>
-                                <span class="text-[8px] text-slate-500 line-through font-normal mt-0.5">₹${mrp}</span>
-                            ` : `
-                                <span class="text-[11px] font-black text-navy leading-none">₹${mrp}</span>
-                            `}
-                        </div>
-
-                        <div class="space-y-1">
-                            <div class="flex items-center bg-slate-100 rounded border border-slate-200">
-                                <span class="text-[8px] font-black px-1.5 text-slate-400">QTY</span>
-                                <input type="text" id="qty-prod-${idx}" placeholder="e.g. 2kg" class="w-full bg-transparent p-1 text-[9px] font-bold outline-none">
-                            </div>
-                            <button onclick="addToCart('prod-${idx}', '${i.name.replace(/'/g, "\\'")}')" class="w-full bg-navy text-gold py-2 rounded text-[9px] font-black uppercase">Add</button>
-                        </div>
-                    </div>
-                </div>
-            `}).join('');
         }
 
         function setCategory(c) { activeCat = c; render(); }
