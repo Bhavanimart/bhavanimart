@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -60,10 +59,10 @@
                 <h1 class="font-[900] text-xl leading-none uppercase tracking-widest">
                     <span class="text-gold">BHAVANI</span> <span class="text-white">MART</span>
                 </h1>
-                <div class="flex items-center gap-2 mt-1">
+                <div class="flex items-center gap-2 mt-2">
                     <p class="text-[9px] font-bold text-white/80 uppercase tracking-widest">+91 9182841682</p>
                     <a href="https://maps.google.com" target="_blank" class="inline-flex items-center bg-white text-navy px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tighter shadow-sm">
-                        <span class="mr-1">📍</span> VISIT STORE
+                        <span class="mr-0.5 text-[7px]">📍</span> VISIT STORE
                     </a>
                 </div>
             </div>
@@ -106,8 +105,8 @@
 
     <div id="cartOverlay" class="cart-overlay" onclick="toggleCart()"></div>
     <div id="cartDrawer" class="cart-drawer flex flex-col p-6">
-        <div class="flex justify-between items-center border-b-2 pb-4 mb-4">
-            <h2 class="font-black text-xl uppercase tracking-tighter text-navy">My List</h2>
+        <div class="flex justify-between items-center border-b-2 pb-4 mb-4 text-navy">
+            <h2 class="font-black text-xl uppercase tracking-tighter">My List</h2>
             <button onclick="toggleCart()" class="text-red-600 font-black text-xs uppercase">Close</button>
         </div>
         <div id="cartItems" class="flex-grow overflow-y-auto no-scrollbar space-y-3"></div>
@@ -154,14 +153,14 @@
             if (offerItems.length > 0) {
                 section.classList.remove('hidden');
                 grid.innerHTML = offerItems.map((i, idx) => `
-                    <div class="min-w-[130px] bg-white rounded-xl p-2 shadow-md text-navy">
-                        <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-14 mx-auto object-contain">
-                        <h4 class="text-[9px] font-black uppercase text-center mt-1 h-6 overflow-hidden">${i.name}</h4>
-                        <div class="text-center mb-1">
-                            <span class="text-[10px] font-black text-red-600">₹${i.price}</span>
-                            <span class="text-[8px] text-slate-400 line-through ml-1">₹${i.mrp}</span>
+                    <div class="min-w-[135px] bg-white rounded-xl p-2 shadow-md text-navy flex flex-col">
+                        <img src="${i.img || 'https://cdn-icons-png.flaticon.com/512/3081/3081840.png'}" class="h-16 mx-auto object-contain mb-1">
+                        <h4 class="text-[9px] font-black uppercase text-center h-6 overflow-hidden mb-1">${i.name}</h4>
+                        <div class="flex justify-center items-center gap-1.5 mb-2">
+                            <span class="text-[11px] font-[900] text-navy">₹${i.price}</span>
+                            <span class="text-[9px] text-slate-400 line-through font-bold">₹${i.mrp}</span>
                         </div>
-                        <button onclick="addToCart('off-${idx}', '${i.name}')" class="w-full bg-red-600 text-white py-1 rounded text-[8px] font-black uppercase">Add</button>
+                        <button onclick="addToCart('off-${idx}', '${i.name.replace(/'/g, "\\'")}')" class="w-full bg-red-600 text-white py-1.5 rounded-lg text-[9px] font-black uppercase">Add</button>
                     </div>
                 `).join('');
             }
