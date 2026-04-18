@@ -191,7 +191,7 @@
                     <h4 class="text-[9px] font-[900] uppercase h-6 overflow-hidden leading-tight mb-1">${i.name}</h4>
                     <div class="flex flex-col mb-1">
                         <span class="text-[11px] font-black leading-none">₹${disc || mrp}</span>
-                        ${disc ? `<span class="text-[8px] text-slate-300 line-through font-normal">₹${mrp}</span>` : ''}
+                        ${disc ? `<span class="text-[8px] text-slate-400 line-through font-normal">₹${mrp}</span>` : ''}
                     </div>
                     <input type="text" id="qty-${idx}" placeholder="Qty" class="w-full border border-slate-200 rounded p-1 text-[8px] font-bold outline-none mb-1">
                     <button onclick="addToCart(${idx}, '${i.name.replace(/'/g, "\\'")}')" class="w-full bg-navy text-gold py-1.5 rounded text-[8px] font-black uppercase">Add</button>
